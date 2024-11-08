@@ -33,30 +33,33 @@ namespace GorillaCheckpointMod
 
         void Update()
         {
-            if (!inRoom) return;
+            if (!inRoom)
+            {
+                if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
+                {
+                    if (!isPressingDown)
+                    {
+                        point.transform.position = GorillaLocomotion.Player.Instance.headCollider.transform.position;
+                        checkpointPlaced = true;
+                    }
 
-            if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
-            {
-                if (!isPressingDown)
-                {
-                    point.transform.position = GorillaLocomotion.Player.Instance.headCollider.transform.position;
-                    checkpointPlaced = true;
-                }
-                    
-                
-            }
-            else if (Keyboard.current.bKey.isPressed || ControllerInputPoller.instance.rightControllerSecondaryButton)
-            {
-                if (!isPressingDown && checkpointPlaced)
-                {
-                    TeleportPlayer(point.transform.position);
 
                 }
+                else if (Keyboard.current.bKey.isPressed || ControllerInputPoller.instance.rightControllerSecondaryButton)
+                {
+                    if (!isPressingDown && checkpointPlaced)
+                    {
+                        TeleportPlayer(point.transform.position);
+
+                    }
+                }
+
+                isPressingDown = Keyboard.current.yKey.isPressed || Keyboard.current.bKey.isPressed ||
+                                 ControllerInputPoller.instance.leftControllerSecondaryButton || ControllerInputPoller.instance.rightControllerSecondaryButton;
+                Console.WriteLine(isPressingDown);
             }
 
-            isPressingDown = Keyboard.current.yKey.isPressed || Keyboard.current.bKey.isPressed ||
-                             ControllerInputPoller.instance.leftControllerSecondaryButton || ControllerInputPoller.instance.rightControllerSecondaryButton;
-            Console.WriteLine(isPressingDown);
+            
         }
 
         void OnModdedJoined(string modeName)
