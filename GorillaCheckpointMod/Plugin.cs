@@ -4,6 +4,7 @@ using UnityEngine;
 using GorillaExtensions;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
+using System;
 
 namespace GorillaCheckpointMod
 {
@@ -13,7 +14,8 @@ namespace GorillaCheckpointMod
     {
         bool inRoom;
         GameObject point;
-        bool isPressingDown;
+        bool isPressingDown = false;
+        bool checkpointPlaced = false;
         Color VRRig_Color;
 
         void Start()
@@ -36,11 +38,16 @@ namespace GorillaCheckpointMod
             if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
             {
                 if (!isPressingDown)
+                {
                     point.transform.position = GorillaLocomotion.Player.Instance.headCollider.transform.position;
+                    checkpointPlaced = true;
+                }
+                    
+                
             }
             else if (Keyboard.current.bKey.isPressed || ControllerInputPoller.instance.rightControllerSecondaryButton)
             {
-                if (!isPressingDown)
+                if (!isPressingDown && checkpointPlaced)
                 {
                     TeleportPlayer(point.transform.position);
 
@@ -48,8 +55,8 @@ namespace GorillaCheckpointMod
             }
 
             isPressingDown = Keyboard.current.yKey.isPressed || Keyboard.current.bKey.isPressed ||
-                             ControllerInputPoller.instance.leftControllerSecondaryButton ||
-                             ControllerInputPoller.instance.rightControllerSecondaryButton;
+                             ControllerInputPoller.instance.leftControllerSecondaryButton || ControllerInputPoller.instance.rightControllerSecondaryButton;
+            Console.WriteLine(isPressingDown);
         }
 
         void OnModdedJoined(string modeName)
