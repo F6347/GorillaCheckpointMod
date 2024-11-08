@@ -33,7 +33,7 @@ namespace GorillaCheckpointMod
 
         void Update()
         {
-            if (inRoom)
+            if (!inRoom)
             {
                 if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
                 {
