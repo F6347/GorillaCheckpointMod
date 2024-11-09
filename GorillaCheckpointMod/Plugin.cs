@@ -16,7 +16,6 @@ namespace GorillaCheckpointMod
         GameObject point;
         bool isPressingDown = false;
         bool checkpointPlaced = false;
-        Color VRRig_Color;
 
         void Start()
         {
@@ -33,33 +32,31 @@ namespace GorillaCheckpointMod
 
         void Update()
         {
-            if (!inRoom)
+            if (inRoom)
             {
-                if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
+                if (!isPressingDown)
                 {
-                    if (!isPressingDown)
+
+                    if (Keyboard.current.yKey.isPressed || ControllerInputPoller.instance.leftControllerSecondaryButton)
                     {
+
                         point.transform.position = GorillaLocomotion.Player.Instance.headCollider.transform.position;
                         checkpointPlaced = true;
+
+
+
                     }
-
-
-                }
-                else if (Keyboard.current.bKey.isPressed || ControllerInputPoller.instance.rightControllerSecondaryButton)
-                {
-                    if (!isPressingDown && checkpointPlaced)
+                    else if (Keyboard.current.bKey.isPressed || ControllerInputPoller.instance.rightControllerSecondaryButton)
                     {
+
                         TeleportPlayer(point.transform.position);
 
+
                     }
                 }
-
                 isPressingDown = Keyboard.current.yKey.isPressed || Keyboard.current.bKey.isPressed ||
-                                 ControllerInputPoller.instance.leftControllerSecondaryButton || ControllerInputPoller.instance.rightControllerSecondaryButton;
-                Console.WriteLine(isPressingDown);
+                                    ControllerInputPoller.instance.leftControllerSecondaryButton || ControllerInputPoller.instance.rightControllerSecondaryButton;
             }
-
-            
         }
 
         void OnModdedJoined(string modeName)
@@ -94,7 +91,7 @@ namespace GorillaCheckpointMod
             GorillaLocomotion.Player.Instance.headCollider.transform.position = checkpointPos;
             Task.Run(async () =>
             {
-                await Task.Delay(1);
+                await Task.Delay(5);
                 foreach (var collider in Resources.FindObjectsOfTypeAll<MeshCollider>())
                     collider.enabled = true;
             });
